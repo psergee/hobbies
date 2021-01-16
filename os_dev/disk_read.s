@@ -8,7 +8,6 @@ read_disk:
     mov dh, 0
     mov cl, 0x02
     mov ah, 2
-
     int 0x13
 
     jnc .good
