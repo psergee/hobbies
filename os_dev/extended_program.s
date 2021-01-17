@@ -21,6 +21,9 @@ EnableA20Line:
 
 [bits 32]
 
+%include "cpuid.s"
+%include "paging.s"
+
 ProtectedModeMain:
     mov ax, dataseg
     mov ds, ax
@@ -29,9 +32,21 @@ ProtectedModeMain:
     mov fs, ax
     mov gs, ax
 
-    mov [0xb8000], byte 'H'
-    mov [0xb8001], byte 'e'
+    call DetectCpuId
+    call DetectLongMode
+    call SetUpIdentityPaging
+    call EditGDT
 
-    jmp $
+    jmp codeseg:Main64Bit
+
+[bits 64]
+
+Main64Bit:
+    mov edi, 0xb8000
+    mov rax, 0x1f201f201f201f20
+    mov ecx, 512
+    rep stosq
+
+    hlt
 
 times 2048-($-$$) db 0
