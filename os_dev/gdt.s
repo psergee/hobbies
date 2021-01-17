@@ -1,5 +1,6 @@
 gdt_nulldesc:
-    dw 0
+    dd 0
+    dd 0
 
 gdt_codedesc:
     dw 0xFFFF

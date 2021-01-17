@@ -1,8 +1,8 @@
 [org 0x7e00]
 
-%include "gdt.s"
-
 jmp EnterProtectedMode
+
+%include "gdt.s"
 
 EnterProtectedMode:
     call EnableA20Line
