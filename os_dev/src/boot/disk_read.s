@@ -1,8 +1,8 @@
-program_space equ 0x7e00
+program_space equ 0x8000
 
 read_disk:
     mov bx, program_space
-    mov al, 16
+    mov al, 32
     mov dl, [boot_disk]
     mov ch, 0
     mov dh, 0
