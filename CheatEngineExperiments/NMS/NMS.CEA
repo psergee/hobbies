@@ -1,0 +1,20 @@
+alloc(newmem,512,"NMS.exe"+6D7B8A)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+newmem:
+mov ebx, [rax+1C] // take max value
+
+originalcode:
+mov [rax+18],ebx
+jmp NMS.exe+6D7C41
+
+exit:
+jmp returnhere
+
+"NMS.exe"+6D7B8A:
+jmp newmem
+nop 3
+returnhere:
+
