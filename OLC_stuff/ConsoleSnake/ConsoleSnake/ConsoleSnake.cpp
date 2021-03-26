@@ -8,7 +8,7 @@ using namespace std;
 
 int main()
 {
-    ScreenBuffer screen(50, 150);
+    Field screen(30, 100);
     Food food(20, 20);
     Snake snake;
 

@@ -5,12 +5,12 @@ Snake::Snake()
     segments.reserve(128);
 }
 
-void Snake::Draw(ScreenBuffer& screen)
+void Snake::Draw(Field& field)
 {
     for (const auto& segment : segments)
-        screen[segment.first * screen.GetColumnsCount() + segment.second] = 'O';
+        field[segment.first * field.GetColumnsCount() + segment.second] = 'O';
     const auto& head = segments.back();
-    screen[head.first * screen.GetColumnsCount() + head.second] = '@';
+    field[head.first * field.GetColumnsCount() + head.second] = '@';
 }
 
 void Snake::SetDirection(Direction direction_)
@@ -41,11 +41,13 @@ void Snake::Move()
     }
 }
 
+wchar_t Food::symbol = L'*';
+
 Food::Food(size_t row_, size_t column_): row(row_), column(column_)
 {
 }
 
-void Food::Draw(ScreenBuffer& screen)
+void Food::Draw(Field& screen)
 {
     screen[row * screen.GetColumnsCount() + column] = symbol;
 }
