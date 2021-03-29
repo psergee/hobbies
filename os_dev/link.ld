@@ -6,11 +6,13 @@ INPUT
 (
     extended_program.o
     kernel_main.o
+    text_print.o
+    io.o
 )
 
 OUTPUT
 (
-    kernel.bin
+    ./build/kernel.bin
 )
 
 SECTIONS
