@@ -7,15 +7,26 @@ Snake::Snake()
 
 void Snake::Draw(Field& field)
 {
+    char body = isDead ? 'x' : 'O';
     for (const auto& segment : segments)
-        field[segment.first * field.GetColumnsCount() + segment.second] = 'O';
+        field[segment.row * field.columns + segment.column] = body;
     const auto& head = segments.back();
-    field[head.first * field.GetColumnsCount() + head.second] = '@';
+    field[head.row * field.columns + head.column] = '@';
 }
 
 void Snake::SetDirection(Direction direction_)
 {
     direction = direction_;
+}
+
+bool Snake::IsDead() const
+{
+    return isDead;
+}
+
+void Snake::Die()
+{
+    isDead = true;
 }
 
 void Snake::Move()
@@ -27,27 +38,37 @@ void Snake::Move()
     switch (direction)
     {
     case Direction::Up:
-        head.first -=1;
+        head.row -=1;
         break;
     case Direction::Down:
-        head.first += 1;
+        head.row += 1;
         break;
     case Direction::Left:
-        head.second -= 1;
+        head.column -= 1;
         break;
     case Direction::Right:
-        head.second += 1;
+        head.column += 1;
         break;
     }
 }
 
+const std::vector<Coordinate>& Snake::GetSegments()
+{
+    return segments;
+}
+
 wchar_t Food::symbol = L'*';
 
-Food::Food(size_t row_, size_t column_): row(row_), column(column_)
+Food::Food(size_t row, size_t column) : location{ row, column }
 {
 }
 
 void Food::Draw(Field& screen)
 {
-    screen[row * screen.GetColumnsCount() + column] = symbol;
+    screen[location.row * screen.columns + location.column] = symbol;
+}
+
+const Coordinate& Food::GetLocation()
+{
+    return location;
 }

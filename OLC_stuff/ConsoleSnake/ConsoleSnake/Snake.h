@@ -4,6 +4,12 @@
 #include <vector>
 #include <utility>
 
+struct Coordinate
+{
+    size_t row;
+    size_t column;
+};
+
 class Food
 {
 public:
@@ -11,10 +17,11 @@ public:
 
     void Draw(Field& screen);
 
-    static wchar_t symbol;
+    const Coordinate& GetLocation();
 
 private:
-    size_t row, column;
+    Coordinate location;
+    static wchar_t symbol;
 };
 
 enum class Direction
@@ -36,8 +43,14 @@ public:
 
     void Move();
 
+    bool IsDead() const;
+
+    void Die();
+
+    const std::vector<Coordinate>& GetSegments();
+
 private:
-    std::vector<std::pair<size_t, size_t>> segments = { { 20, 20 }, { 20, 21 }, { 20, 22 } };
+    std::vector<Coordinate> segments = { { 20, 20 }, { 20, 21 }, { 20, 22 } };
     Direction direction = Direction::Right;
     bool isDead = false;
 };

@@ -13,11 +13,6 @@ public:
 
     void Flush();
 
-    size_t GetColumnsCount()
-    {
-        return columns;
-    }
-
     wchar_t& operator[](size_t index)
     {
         if (index >= size)
@@ -28,8 +23,9 @@ public:
 
     ~Field();
 
-private:
     const size_t rows, columns, size;
+
+private:
     std::unique_ptr<wchar_t[]> buffer;
     HANDLE console;
 };

@@ -143,10 +143,12 @@
   <ItemGroup>
     <ClCompile Include="ConsoleSnake.cpp" />
     <ClCompile Include="Field.cpp" />
+    <ClCompile Include="GameLogic.cpp" />
     <ClCompile Include="Snake.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Field.h" />
+    <ClInclude Include="GameLogic.h" />
     <ClInclude Include="Snake.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
