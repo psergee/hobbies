@@ -7,22 +7,30 @@ using namespace std::chrono_literals;
 
 GameLogic::GameLogic(): field(30, 100), xDist(1, field.rows-1), yDist(1, field.columns-1)
 {
-    food.Move({ 20, 20 });
+    food.Move({ 20, 50 });
 }
 
 void GameLogic::MainLoop()
 {
     while (!snake.IsDead())
     {
-        std::this_thread::sleep_for(200ms);
-
-        if (GetAsyncKeyState(VK_UP) & 0x8000)
+        switch (snake.GetDirection())
+        {
+        case Direction::Up:
+        case Direction::Down:
+            std::this_thread::sleep_for(200ms);
+        case Direction::Left:
+        case Direction::Right:
+            std::this_thread::sleep_for(120ms);
+        }
+        
+        if (GetAsyncKeyState(VK_UP) & 0x1)
             snake.SetDirection(Direction::Up);
-        else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+        else if (GetAsyncKeyState(VK_RIGHT) & 0x1)
             snake.SetDirection(Direction::Right);
-        else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+        else if (GetAsyncKeyState(VK_DOWN) & 0x1)
             snake.SetDirection(Direction::Down);
-        else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+        else if (GetAsyncKeyState(VK_LEFT) & 0x1)
             snake.SetDirection(Direction::Left);
         snake.Move();
 

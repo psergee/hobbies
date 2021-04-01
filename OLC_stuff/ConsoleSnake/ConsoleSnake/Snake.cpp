@@ -16,7 +16,13 @@ void Snake::Draw(Field& field)
 
 void Snake::SetDirection(Direction direction_)
 {
-    direction = direction_;
+    if (std::abs(static_cast<int>(direction_) - static_cast<int>(direction)) != 2)
+        direction = direction_;
+}
+
+Direction Snake::GetDirection()
+{
+    return direction;
 }
 
 bool Snake::IsDead() const

@@ -46,6 +46,8 @@ public:
 
     void SetDirection(Direction direction_);
 
+    Direction GetDirection();
+
     void Move();
 
     bool IsDead() const;
