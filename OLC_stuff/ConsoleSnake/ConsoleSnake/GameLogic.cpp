@@ -5,8 +5,9 @@
 
 using namespace std::chrono_literals;
 
-GameLogic::GameLogic(): field(30, 100), food(20, 20)
+GameLogic::GameLogic(): field(30, 100), xDist(1, field.rows-1), yDist(1, field.columns-1)
 {
+    food.Move({ 20, 20 });
 }
 
 void GameLogic::MainLoop()
@@ -25,7 +26,8 @@ void GameLogic::MainLoop()
             snake.SetDirection(Direction::Left);
         snake.Move();
 
-        CheckWallCollission();
+        DetectCollision();
+        CheckFood();
 
         field.Clear();
         snake.Draw(field);
@@ -37,16 +39,40 @@ void GameLogic::MainLoop()
     DrawCompleteScreen();
 }
 
-bool GameLogic::CheckWallCollission()
+void GameLogic::DetectCollision()
 {
     const auto snakeSegments = snake.GetSegments();
     const auto head = snakeSegments.back();
-    if (head.row <= 0 || head.row >= field.rows-1 || head.column <= 0 || head.column >= field.columns-1)
-    {
+    if (head.x <= 0 || head.x >= field.rows-1 || head.y <= 0 || head.y >= field.columns-1)
         snake.Die();
-        return true;
+
+    if (std::find(snakeSegments.cbegin(), snakeSegments.cend() - 1, head) != snakeSegments.cend()-1)
+        snake.Die();
+}
+
+void GameLogic::CheckFood()
+{
+    const auto& head = snake.GetSegments().back();
+    const auto& foodLocation = food.GetLocation();
+    if (head == foodLocation)
+    {
+        snake.Grow();
+        RandomizeFoodLocation();
     }
-    return false;
+}
+
+void GameLogic::RandomizeFoodLocation()
+{
+    Coordinate newFoodLocation;
+    const auto& snakeSegments = snake.GetSegments();
+    newFoodLocation.x = xDist(rndEngine);
+    newFoodLocation.y = yDist(rndEngine);
+    while (std::find(snakeSegments.cbegin(), snakeSegments.cend(), newFoodLocation) != snakeSegments.cend())
+    {
+        newFoodLocation.x = xDist(rndEngine);
+        newFoodLocation.y = yDist(rndEngine);
+    }
+    food.Move(newFoodLocation);
 }
 
 void GameLogic::DrawCompleteScreen()
